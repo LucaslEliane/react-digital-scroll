@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './index.less';
-
 const digitalNode = [];
 
 for (let i = 0; i < 10; i += 1) {

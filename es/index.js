@@ -11,7 +11,6 @@ import PropTypes from 'prop-types';
 
 import DigitalItem from './components/digital-item';
 import Utils from './utils';
-import './index.less';
 
 var DigitalScroll = function (_React$Component) {
     _inherits(DigitalScroll, _React$Component);

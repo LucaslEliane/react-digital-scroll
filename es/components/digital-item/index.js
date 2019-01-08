@@ -7,8 +7,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './index.less';
-
 var digitalNode = [];
 
 for (var i = 0; i < 10; i += 1) {

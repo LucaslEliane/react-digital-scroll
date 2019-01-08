@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import DigitalItem from './components/digital-item';
 import Utils from './utils';
-import './index.less';
 
 export default class DigitalScroll extends React.Component {
     constructor(props) {
