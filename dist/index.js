@@ -1,28 +1,8 @@
 'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
+exports.__esModule = true;
 
-var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
-
-var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _react = require('react');
 
@@ -32,43 +12,97 @@ var _propTypes = require('prop-types');
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
+var _digitalItem = require('./components/digital-item');
+
+var _digitalItem2 = _interopRequireDefault(_digitalItem);
+
+var _utils = require('./utils');
+
+var _utils2 = _interopRequireDefault(_utils);
+
+require('./index.less');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Test = function (_Component) {
-    (0, _inherits3.default)(Test, _Component);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    function Test(props) {
-        (0, _classCallCheck3.default)(this, Test);
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-        var _this = (0, _possibleConstructorReturn3.default)(this, (Test.__proto__ || (0, _getPrototypeOf2.default)(Test)).call(this, props));
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-        _this.clk = _this.clk.bind(_this);
+var DigitalScroll = function (_React$Component) {
+    _inherits(DigitalScroll, _React$Component);
+
+    function DigitalScroll(props) {
+        _classCallCheck(this, DigitalScroll);
+
+        var _this = _possibleConstructorReturn(this, _React$Component.call(this, props));
+
+        _this.renderDigitals = function () {
+            var _this$state = _this.state,
+                digital = _this$state.digital,
+                height = _this$state.height;
+
+
+            return digital.map(function (v, i) {
+                return _react2.default.createElement(_digitalItem2.default, { digital: v, key: 'digital-' + i, height: height });
+            });
+        };
+
+        _this.state = _extends({
+            height: 'auto'
+        }, _utils2.default.formatPropsToState(props));
+        _this.container = _react2.default.createRef();
         return _this;
     }
 
-    (0, _createClass3.default)(Test, [{
-        key: 'clk',
-        value: function clk() {
-            console.log('click');
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var name = this.props.name;
+    DigitalScroll.prototype.componentDidMount = function componentDidMount() {
+        var container = this.container.current;
+        var height = container && container.style && container.style.height;
+        this.setState({
+            height: height
+        });
+    };
 
-            return _react2.default.createElement(
-                'div',
-                { className: 'test', onClick: this.clk },
-                'Hello ',
-                name
-            );
-        }
-    }]);
-    return Test;
-}(_react.Component);
+    DigitalScroll.getDerivedStateFromProps = function getDerivedStateFromProps(nextProps, prevState) {
+        var prevDigital = prevState.digital;
+        var nextDigital = nextProps.digital;
 
-Test.propTypes = {
-    name: _propTypes2.default.string
+        if (prevDigital.length && +prevDigital.join('') === +nextDigital) {
+            return null;
+        }
+
+        return _extends({}, _utils2.default.formatPropsToState(nextProps));
+    };
+
+    DigitalScroll.prototype.render = function render() {
+        var _props = this.props,
+            clazz = _props.clazz,
+            style = _props.style;
+
+
+        return _react2.default.createElement(
+            'ul',
+            { className: 'scroll-container ' + clazz, style: style, ref: this.container },
+            this.renderDigitals()
+        );
+    };
+
+    return DigitalScroll;
+}(_react2.default.Component);
+
+exports.default = DigitalScroll;
+
+
+DigitalScroll.propTypes = {
+    digital: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string]).isRequired,
+    length: _propTypes2.default.number.isRequired,
+    clazz: _propTypes2.default.string,
+    style: _propTypes2.default.object
 };
-exports.default = Test;
+
+DigitalScroll.defaultProps = {
+    clazz: '',
+    style: {}
+};
 module.exports = exports['default'];
