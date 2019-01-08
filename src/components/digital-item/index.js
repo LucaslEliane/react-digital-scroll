@@ -7,7 +7,7 @@ const digitalNode = [];
 
 for (let i = 0; i < 10; i += 1) {
     digitalNode.push(
-        <p>{i}</p>
+        <p key={`label-${i}`}>{i}</p>
     );
 }
 

@@ -1,26 +1,51 @@
 import React from 'react';
 import { configure, shallow, render, mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-15';
-import Test from '../src/index';
+import Adapter from 'enzyme-adapter-react-16';
+import DigitalScroll from '../src/index';
+import DigitalItem from '../src/components/digital-item/index';
 
 configure({ adapter: new Adapter() });
 
-describe('shallow', () => {
-    test('Test show', () => {
-        const app = shallow(<Test name="Tom" />);
-        expect(app.find('.test').text()).toBe('Hello Tom ');
+describe('digital-scroll', () => {
+    test('situation: simple scroll', () => {
+        const wrapper = mount(
+            <DigitalScroll
+                clazz="wrapper"
+                digital={12}
+                length={10}
+            />
+        );
+
+        expect(wrapper.find(DigitalItem).length).toBe(10);
     });
-    test('Test click', () => {
-        const app = shallow(<Test name="Tom" />);
-        app.find('.test').simulate('click');
-        expect(app.find('.test').text()).toBe('Hello Tom click');
+
+    test('situation: digital\'s length is longer than the length property', () => {
+        const wrapper = mount(
+            <DigitalScroll
+                clazz="wrapper"
+                digital={200000}
+                length={4}
+            />
+        );
+
+        expect(wrapper.find(DigitalItem).length).toBe(6);
     });
-    test('Test component', () => {
-        const app = render(<Test name="Tom" title="alert" />);
-        expect(app.find('.message').text()).toBe('alert');
-    });
-    test('Test props', () => {
-        const app = mount(<Test name="Tom" />);
-        expect(app.props().name).toBe('Tom');
+
+    test('situation: DigitalScroll property has been changed', () => {
+        const wrapper = mount(
+            <DigitalScroll
+                clazz="wrapper"
+                digital={2000}
+                length={4}
+            />
+        );
+
+        wrapper.setProps({
+            digital: 2040,
+        });
+
+        const childProps = wrapper.find(DigitalItem).at(2).props();
+
+        expect(childProps.digital).toBe('4');
     });
 });
