@@ -1,0 +1,5 @@
+# Ignore 
+/test
+/node_modules
+/dist
+/es
